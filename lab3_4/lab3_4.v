@@ -11,12 +11,11 @@ module lab3_4(HEX0, HEX1, HEX2, HEX3, HEX4, HEX5, SW, LEDR);
 	//assign {cout, add} = SW[7:4] + SW[3:0] + SW[8];
 	
 	assign ov = result[3]&{result[2]|result[1]}|cout;
-	carryLookahead(result, resultOut, add, {1'b0, ov, ov, 1'b0}, 1'b0);
+	fourBitAdder(result, resultOut, add, {1'b0, ov, ov, 1'b0}, 1'b0);
 	decoder res0(HEX4, result);
 	decoder res1(HEX5, cout|resultOut);
 	twoDigit a(HEX2, HEX3, SW[7:4]);
 	twoDigit b(HEX0, HEX1, SW[3:0]);
-	assign LEDR[3:0] = add;
 	assign LEDR[9] = cout&(add[3]|add[2]);
 endmodule
 
