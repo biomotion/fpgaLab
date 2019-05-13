@@ -4,7 +4,7 @@
 // MODULE: lpm_mult 
 
 // ============================================================
-// File Name: multiplier.v
+// File Name: multiplexer.v
 // Megafunction Name(s):
 // 			lpm_mult
 //
@@ -31,7 +31,7 @@
 //Altera or its authorized distributors.  Please refer to the 
 //applicable agreement for further details.
 
-module multiplier (
+module multiplexer (
 	dataa,
 	datab,
 	result);
@@ -75,10 +75,10 @@ endmodule
 // Retrieval info: CONNECT: @dataa 0 0 8 0 dataa 0 0 8 0
 // Retrieval info: CONNECT: @datab 0 0 8 0 datab 0 0 8 0
 // Retrieval info: CONNECT: result 0 0 16 0 @result 0 0 16 0
-// Retrieval info: GEN_FILE: TYPE_NORMAL multiplier.v TRUE
-// Retrieval info: GEN_FILE: TYPE_NORMAL multiplier.inc FALSE
-// Retrieval info: GEN_FILE: TYPE_NORMAL multiplier.cmp FALSE
-// Retrieval info: GEN_FILE: TYPE_NORMAL multiplier.bsf FALSE
-// Retrieval info: GEN_FILE: TYPE_NORMAL multiplier_inst.v FALSE
-// Retrieval info: GEN_FILE: TYPE_NORMAL multiplier_bb.v TRUE
+// Retrieval info: GEN_FILE: TYPE_NORMAL multiplexer.v TRUE
+// Retrieval info: GEN_FILE: TYPE_NORMAL multiplexer.inc FALSE
+// Retrieval info: GEN_FILE: TYPE_NORMAL multiplexer.cmp FALSE
+// Retrieval info: GEN_FILE: TYPE_NORMAL multiplexer.bsf FALSE
+// Retrieval info: GEN_FILE: TYPE_NORMAL multiplexer_inst.v FALSE
+// Retrieval info: GEN_FILE: TYPE_NORMAL multiplexer_bb.v TRUE
 // Retrieval info: LIB_FILE: lpm

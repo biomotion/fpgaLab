@@ -1,28 +1,30 @@
-module lab7_6(HEX0, HEX1, HEX2, HEX3, LEDR, SW, KEY);
-	input [9:0] SW;
-	input [3:0] KEY;
-	output [6:0] HEX0, HEX1, HEX2, HEX3;
-	output [9:9] LEDR;
-	reg [7:0]A, B, C, D;
-	wire [15:0] S, X, Y;
-	reg [7:0] out1, out0;
-	reg toggle;
+module lab7_6(LEDR, HEX0, HEX1, HEX2, HEX3, KEY, SW);
+	input[3:0] KEY;
+	input[9:0] SW;
+	output[6:0] HEX0, HEX1, HEX2, HEX3;
+	output[9:0] LEDR;
 	
-	always @ (posedge KEY[1] or negedge KEY[0]) begin
-		if(~KEY[0]) begin
-			A <= 0;
-			B <= 0;
-			C <= 0;
-			D <= 0;
-		end
-		else if(SW[9]) begin
-			if(SW[8]) begin
-				if(~KEY[2])
+	reg [7:0] A, B, C, D;
+	wire [15:0] X, Y, S, OUT;
+	reg displayResult, displayAC_BD;
+	wire [7:0] AC, BD;
+	
+	initial begin
+		A <= 0;
+		B <= 0;
+		C <= 0;
+		D <= 0;
+	end
+	
+	always @ (posedge KEY[1]) begin
+		if(SW[9]) begin
+			if(~SW[8]) begin
+				if(KEY[2])
 					A <= SW[7:0];
 				else
 					B <= SW[7:0];
 			end else begin
-				if(~KEY[2])
+				if(KEY[2])
 					C <= SW[7:0];
 				else
 					D <= SW[7:0];
@@ -30,35 +32,26 @@ module lab7_6(HEX0, HEX1, HEX2, HEX3, LEDR, SW, KEY);
 		end
 	end
 	
-	always @(posedge KEY[3]) begin
-		toggle <= ~toggle;
-		if(toggle) begin
-			out1 <= S[15:8];
-			out0 <= S[7:0];
-		end else begin
-			
-			if(SW[8]) begin
-				out1 <= A;
-				out0 <= B;
-			end else begin
-				out1 <= C;
-				out0 <= D;
-			end
-		end
+	always @ (posedge KEY[3]) begin
+		displayResult <= ~displayResult;
 	end
 	
-	multiplier(A, B, X);
-	multiplier(C, D, Y);
-	adder(X, Y, S, LEDR[9]);
+	assign LEDR[7:0] = SW[7:0];
+	multiplexer(A, B, X);
+	multiplexer(C, D, Y);
+	adder(X, Y, LEDR[9], S);
 	
-	converter(HEX0, out0[3:0]);
-	converter(HEX1, out0[7:4]);
-	converter(HEX2, out1[3:0]);
-	converter(HEX3, out1[7:4]);
+	mux_8bit(A, C, SW[8], AC);
+	mux_8bit(B, D, SW[8], BD);
+	mux_16bit({AC, BD}, S, displayResult, OUT);
 	
-
+	converter(HEX0, OUT[3:0]);
+	converter(HEX1, OUT[7:4]);
+	converter(HEX2, OUT[11:8]);
+	converter(HEX3, OUT[15:12]);
 	
 endmodule
+
 
 module converter(seg, num);
 	 input [3:0] num;
