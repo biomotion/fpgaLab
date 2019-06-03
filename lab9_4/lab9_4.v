@@ -17,7 +17,7 @@ module lab9_4(LEDR, HEX0, HEX2, HEX3, CLOCK_50, KEY, SW);
 	end
 	
 	always @ (posedge CLOCK_50) begin
-		if (q == 5000000)begin
+		if (q == 25000000)begin
 			q <= 0;
 			clk_1sec <= ~clk_1sec;
 		end
@@ -30,10 +30,10 @@ module lab9_4(LEDR, HEX0, HEX2, HEX3, CLOCK_50, KEY, SW);
 	
 	always @(posedge clk_1sec) begin
 
-		if (address < 31)
-			address <= address+1;
-		else
+		if (address == 8'b11111111)
 			address <= 0;
+		else
+			address <= address+1;
 
 			
 	end
