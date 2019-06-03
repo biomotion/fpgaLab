@@ -7,6 +7,7 @@ module lab9_5(LEDR, HEX2, HEX3, HEX0, CLOCK_50, KEY, SW);
 	
 	reg [31:0] q;
 	reg [4:0] address;
+	wire [3:0]out;
 	
 	always @ (posedge CLOCK_50 or negedge KEY[0]) begin
 		if(!KEY[0]) begin
@@ -22,18 +23,33 @@ module lab9_5(LEDR, HEX2, HEX3, HEX0, CLOCK_50, KEY, SW);
 		end
 	end
 	
+	converter(HEX0, out);
 	converter(HEX2, address[3:0]);
 	converter(HEX3, address[4]);
 	
+	ram2port(CLOCK_50, SW[8:5], address, SW[4:0], SW[9], out);
+	
+	assign LEDR[0] = SW[9];
+	
 endmodule
 
-module ram2ch(clock, data, rdaddress, wraddress, wren, q);
+module ram2port(clock, data, rdaddress, wraddress, wren, q);
 	input	  clock;
 	input	[3:0]  data;
 	input	[4:0]  rdaddress;
 	input	[4:0]  wraddress;
 	input	  wren;
 	output	[3:0]  q;
+	reg [4:0]addr;
+	
+	always @(wren) begin
+		case(wren)
+			1'b0: addr <= rdaddress;
+			1'b1:	addr <= wraddress;
+		endcase
+	end
+	
+	ram(addr, clock, data, wren, q);
 endmodule
 
 module converter(seg, num);
